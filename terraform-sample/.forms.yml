@@ -1,0 +1,180 @@
+---
+version: "2"
+use_cases:
+- name: default
+  sections:
+{% if stack_usecase == "aws" %}
+  - name: Cloud provider
+    groups:
+    - name: access
+      technologies: [pipeline]
+      vars:
+      - name: "Aws region"
+        key: aws_default_region
+        widget: auto_complete
+        type: string
+        values: ["eu-north-1","ap-south-1","eu-west-3","eu-west-2","eu-west-1","ap-northeast-2","ap-northeast-1","sa-east-1","ca-central-1","ap-southeast-1","ap-southeast-2","eu-central-1","us-east-1","us-east-2","us-west-1","us-west-2"]
+        default: eu-west-1
+      - name: "AWS access key"
+        description: "AWS access key which should be used"
+        key: aws_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - aws
+        type: string
+        default: "((aws))"
+
+{% elif stack_usecase == "gcp" %}
+      - name: "GCP project name"
+        description: "The GCP project name to use"
+        key: gcp_project
+        widget: simple_text
+        type: string
+        default: cycloid-demo
+      - name: "GCP zone"
+        key: gcp_zone
+        widget: auto_complete
+        type: string
+        values: [asia-east1-a,asia-east1-b,asia-east1-c,asia-east2-a,asia-east2-b,asia-east2-c,asia-northeast1-a,asia-northeast1-b,asia-northeast1-c,asia-northeast2-a,asia-northeast2-b,asia-northeast2-c,asia-northeast3-a,asia-northeast3-b,asia-northeast3-c,asia-south1-a,asia-south1-b,asia-south1-c,asia-southeast1-a,asia-southeast1-b,asia-southeast1-c,australia-southeast1-a,australia-southeast1-b,australia-southeast1-c,europe-north1-a,europe-north1-b,europe-north1-c,europe-west1-b,europe-west1-c,europe-west1-d,europe-west2-a,europe-west2-b,europe-west2-c,europe-west3-a,europe-west3-b,europe-west3-c,europe-west4-a,europe-west4-b,europe-west4-c,europe-west6-a,europe-west6-b,europe-west6-c,northamerica-northeast1-a,northamerica-northeast1-b,northamerica-northeast1-c,southamerica-east1-a,southamerica-east1-b,southamerica-east1-c,us-central1-a,us-central1-b,us-central1-c,us-central1-f,us-east1-b,us-east1-c,us-east1-d,us-east4-a,us-east4-b,us-east4-c,us-west1-a,us-west1-b,us-west1-c,us-west2-a,us-west2-b,us-west2-c,us-west3-a,us-west3-b,us-west3-c,us-west4-a,us-west4-b,us-west4-c]
+        default: "europe-west1-b"
+      - name: "GCP json credentials"
+        description: "GCP credentials in json format which should be used"
+        key: gcp_credentials_json
+        widget: cy_cred
+        widget_config:
+          cred_types:
+            - gcp
+        type: string
+        default: "((gcp.json_key))"
+
+
+{% elif stack_usecase == "azure" %}
+      - name: "Azure resource group name"
+        description: "The name of the resource group in which create the resources"
+        key: azure_resource_group_name
+        widget: simple_text
+        type: string
+        default: "cycloid-demo"
+      - name: "Azure environment"
+        description: "The Cloud Environment which should be used"
+        key: azure_env
+        widget: radios
+        type: string
+        values:
+        - public
+        - china
+        - german
+        - stack
+        - usgovernment
+        default: public
+      - name: "Azure location"
+        key: azure_location
+        widget: auto_complete
+        type: string
+        values: [eastasia,southeastasia,centralus,eastus,eastus2,westus,northcentralus,southcentralus,northeurope,westeurope,japanwest,japaneast,brazilsouth,australiaeast,australiasoutheast,southindia,centralindia,westindia,canadacentral,canadaeast,uksouth,ukwest,westcentralus,westus2,koreacentral,koreasouth,francecentral,francesouth,australiacentral,australiacentral2,uaecentral,uaenorth,southafricanorth,southafricawest,switzerlandnorth,switzerlandwest,germanynorth,germanywestcentral,norwaywest,norwayeast]
+        default: francecentral
+      - name: "Azure credential"
+        description: "The azure credential containing subscription_id, tenant_id, client_id, client_secret"
+        key: azure_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - azure
+        type: string
+        default: "((azure))"
+
+{% else %}
+
+{% endif %}
+  - name: App
+    groups:
+    - name: config
+      technologies: [terraform]
+      vars:
+      - name: "Random string length"
+        description: "Specify the length of the random string"
+        key: random_length
+        widget: number
+        type: integer
+        default: 16
+
+{% if auth_type == "http" %}
+  - name: Git
+    groups:
+    - name: config
+      technologies: [pipeline]
+      vars:
+      - name: "Config git username"
+        description: "Username to fetch the config Git repository."
+        key: config_git_username
+        type: string
+        widget: cy_cred
+        widget_config:
+          cred_types:
+            - basic_auth
+        required: true
+      - name: "Config git password"
+        description: "Password to fetch the config Git repository."
+        key: config_git_password
+        type: string
+        widget: cy_cred
+        widget_config:
+          cred_types:
+            - basic_auth
+        required: true
+    - name: stack
+      technologies: [pipeline]
+      vars:
+      - name: "Stack git username"
+        description: "Username pair to fetch the stack Git repository."
+        key: stack_git_username
+        type: string
+        widget: cy_cred
+        widget_config:
+          cred_types:
+            - basic_auth
+        required: true
+      - name: "Stack git password"
+        description: "Password pair to fetch the stack Git repository."
+        key: stack_git_password
+        type: string
+        widget: cy_cred
+        widget_config:
+          cred_types:
+            - basic_auth
+        required: true
+{% else %}
+  - name: Git
+    groups:
+    - name: config
+      technologies: [pipeline]
+      vars:
+      - name: "Config git key"
+        description: "SSH key pair to fetch the config Git repository."
+        key: config_git_private_key
+        type: string
+        widget: cy_cred
+        widget_config:
+          cred_types:
+            - ssh
+        #default: "((ssh_config.ssh_key))"
+        required: true
+
+    - name: stack
+      technologies: [pipeline]
+      vars:
+      - name: "Stack git key"
+        description: "SSH key pair to fetch the stack Git repository."
+        key: stack_git_private_key
+        type: string
+        widget: cy_cred
+        widget_config:
+          cred_types:
+            - ssh
+        #default: "((ssh_stack.ssh_key))"
+        required: true
+{% endif %}
+

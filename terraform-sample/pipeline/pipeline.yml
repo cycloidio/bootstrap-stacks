@@ -1,0 +1,158 @@
+# YAML anchors
+shared:
+  - &task-merge-stack-and-config
+    task: merge-stack-and-config
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: cycloid/cycloid-toolkit
+          tag: latest
+      run:
+        path: /usr/bin/merge-stack-and-config
+      inputs:
+        - name: git_config
+          path: "config"
+        - name: git_stack
+          path: "stack"
+      outputs:
+        - name: merged-stack
+          path: "merged-stack"
+    params:
+      CONFIG_PATH: ((project))/terraform/((env))
+      STACK_PATH: ((stack_path))/terraform
+
+groups:
+- name: overview
+  jobs:
+  - terraform-plan
+  - terraform-apply
+- name: destroy
+  jobs:
+  - terraform-destroy
+
+resource_types:
+- name: terraform
+  type: docker-image
+  source:
+    repository: cycloid/terraform-resource
+    tag: '1.3.9'
+
+resources:
+- name: tfstate
+  type: terraform
+  source:
+    env_name: ((env))
+    backend_type: http
+    backend_config:
+      address: '((cycloid_api_url))/inventory?jwt=($ inventory_jwt $)'
+      skip_cert_verification: true
+    vars:
+{% if stack_usecase == "aws" %}
+      aws_cred: ((aws_cred))
+      aws_region: ((aws_default_region))
+{% elif stack_usecase == "gcp" %}
+      gcp_project: ((gcp_project))
+      gcp_zone: ((gcp_zone))
+{% elif stack_usecase == "azure" %}
+      azure_resource_group_name: ((azure_resource_group_name))
+      azure_location: ((azure_location))
+      azure_env: ((azure_env))
+      azure_cred: ((azure_cred))
+{% endif %}
+      env: ((env))
+      project: ((project))
+      organization: ((org))
+
+{% if stack_usecase == "gcp" %}
+    env:
+      GOOGLE_PROJECT: ((gcp_project))
+      GOOGLE_ZONE: ((gcp_zone))
+      GOOGLE_CREDENTIALS: ((gcp_credentials_json))
+{% endif %}
+
+# The Terraform stack (will be merged with the config)
+- name: git_stack
+  type: git
+  source:
+    uri: ($ scs_url $)
+    branch: ($ scs_branch $)
+{% if auth_type == "http" %}
+    username: ((stack_git_username))
+    password: ((stack_git_password))
+{% else %}
+    private_key: ((stack_git_private_key))
+{% endif %}
+    paths:
+      - ((stack_path))/terraform/*
+
+# The Terraform config (will be merged with the stack)
+- name: git_config
+  type: git
+  source:
+    uri: ($ cr_url $)
+    branch: ($ cr_branch $)
+{% if auth_type == "http" %}
+    username: ((config_git_username))
+    password: ((config_git_password))
+{% else %}
+    private_key: ((config_git_private_key))
+{% endif %}
+    paths:
+      - ((project))/terraform/((env))/*
+
+jobs:
+  - name: terraform-plan
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - do:
+        - get: git_stack
+          trigger: true
+        - get: git_config
+          trigger: true
+        - *task-merge-stack-and-config
+        - put: tfstate
+          params:
+            plan_only: true
+            terraform_source: merged-stack/
+
+  - name: terraform-apply
+    build_logs_to_retain: 10
+    plan:
+      - do:
+        - get: git_stack
+          trigger: false
+          passed:
+            - terraform-plan
+        - get: git_config
+          trigger: false
+          passed:
+            - terraform-plan
+        - get: tfstate
+          trigger: false
+          passed:
+            - terraform-plan
+        - *task-merge-stack-and-config
+        - put: tfstate
+          params:
+            plan_run: true
+            terraform_source: merged-stack/
+
+  - name: terraform-destroy
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - do:
+          - get: git_stack
+            trigger: false
+          - get: git_config
+            trigger: false
+          - *task-merge-stack-and-config
+          - put: tfstate
+            params:
+              action: destroy
+              terraform_source: merged-stack/
+            get_params:
+              action: destroy

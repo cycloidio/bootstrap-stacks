@@ -1,0 +1,39 @@
+env: ($ environment $)
+project: ($ project $)
+org: ($ organization_canonical $)
+
+{% if auth_type == "http" %}
+config_git_username: "Filled by stackforms"
+config_git_password: "Filled by stackforms"
+stack_git_username: "Filled by stackforms"
+stack_git_password: "Filled by stackforms"
+{% else %}
+config_git_private_key: "Filled by stackforms"
+stack_git_private_key: "Filled by stackforms"
+{% endif %}
+
+stack_path: {{stack_path}}
+cycloid_api_url: {{api_url}}
+
+{% if stack_usecase == "aws" %}
+# Aws access to use inside the pipeline
+aws_cred: "Filled by stackforms"
+aws_default_region: "Filled by stackforms"
+
+{% elif stack_usecase == "gcp" %}
+gcp_project: "Filled by stackforms"
+gcp_zone: "Filled by stackforms"
+gcp_credentials_json: "Filled by stackforms"
+
+{% elif stack_usecase == "azure" %}
+azure_resource_group_name: "Filled by stackforms"
+azure_location: "Filled by stackforms"
+azure_env: "Filled by stackforms"
+azure_cred: "Filled by stackforms"
+
+{% else %}
+
+{% endif %}
+#
+## Terraform tfstate storage Configuration
+#terraform_storage_bucket_name: ($ organization_canonical $)-terraform-remote-state

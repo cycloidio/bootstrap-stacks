@@ -1,0 +1,34 @@
+---
+version: '2'
+name: '{{ user_stack_canonical}}'
+canonical: '{{ user_stack_canonical}}'
+description: |
+  {{user_stack_description}}
+keywords:
+  - 'terraform'
+  - 'start'
+  - 'sample'
+  - '{{ stack_usecase }}'
+author: 'Cycloid'
+image: |
+  {{user_stack_icon}}
+technologies:
+  - technology: concourse
+    version: n/a
+  - technology: terraform
+    version: n/a
+
+config:
+  default:
+    name: 'Default'
+    description: 'Default pipeline usecase'
+    pipeline:
+      pipeline:
+        path: 'pipeline/pipeline.yml'
+      variables:
+        path: 'pipeline/variables.sample.yml'
+        destination: '($ project $)/pipeline/variables-($ environment $).yml'
+    terraform:
+      main:
+        path: 'terraform/main.tf.sample'
+        destination: '($ project $)/terraform/($ environment $)/main.tf'
