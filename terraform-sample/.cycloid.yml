@@ -9,6 +9,7 @@ keywords:
   - 'start'
   - 'sample'
   - '{{ stack_usecase }}'
+template: true
 author: 'Cycloid'
 image: |
   {{user_stack_icon}}
