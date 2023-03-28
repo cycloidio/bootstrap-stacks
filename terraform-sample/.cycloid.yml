@@ -1,9 +1,8 @@
 ---
 version: '2'
-name: '{{ user_stack_canonical}}'
-canonical: '{{ user_stack_canonical}}'
-description: |
-  {{user_stack_description}}
+name: terraform-sample
+canonical: terraform-sample
+description: {{stack_author}}'s bootstrap stack for {{stack_usecase}}
 keywords:
   - 'terraform'
   - 'start'
@@ -11,8 +10,6 @@ keywords:
   - '{{ stack_usecase }}'
 template: true
 author: 'Cycloid'
-image: |
-  {{user_stack_icon}}
 technologies:
   - technology: concourse
     version: n/a
