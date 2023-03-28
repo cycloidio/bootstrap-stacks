@@ -2,14 +2,14 @@
 version: '2'
 name: terraform-sample
 canonical: terraform-sample
-description: {{stack_author}}'s bootstrap stack for {{stack_usecase}}
+description: 'bootstrap stack for {{stack_usecase}}'
 keywords:
   - 'terraform'
   - 'start'
   - 'sample'
   - '{{ stack_usecase }}'
 template: true
-author: 'Cycloid'
+author: '{{stack_author}}'
 technologies:
   - technology: concourse
     version: n/a
@@ -30,3 +30,4 @@ config:
       main:
         path: 'terraform/main.tf.sample'
         destination: '($ project $)/terraform/($ environment $)/main.tf'
+
