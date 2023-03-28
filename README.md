@@ -11,14 +11,12 @@ The difference from a normal stacks are the following:
 - you can use jinja2 templates to conditionally alter the resulting stack
 
 When the user creates a stack from template the BE will pass the following parameters:
-- stack_template
 - stack_usecase
-- user_stack_canonical
-- user_stack_description
-- user_stack_icon
-- stack_path
-- api_url
-- auth_type
+- stack_author
+- stack_canonical
+- service_catalog_canonical
+- scs_credential_path
+- scs_credential_type
 
 The relevant files will be rendered with the passed parameters and added to a resulting stack.
 The relevant files are the following
