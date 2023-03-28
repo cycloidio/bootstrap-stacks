@@ -1,7 +1,7 @@
 ---
 version: "2"
 use_cases:
-- name: default
+- name: {{stack_usecase}}
   sections:
 {% if stack_usecase == "aws" %}
   - name: Cloud provider
