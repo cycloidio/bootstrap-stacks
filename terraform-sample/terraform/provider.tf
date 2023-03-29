@@ -75,12 +75,6 @@ variable "azure_env" {
   default = "public"
 }
 
-variable "azure_resource_group_name" {}
-
-variable "azure_location" {
-  default = "francecentral"
-}
-
 {% else %}
 
 {% endif %}

@@ -1,5 +1,5 @@
-output "random_string" {
-  value = random_string.random.result
+output "instance_id" {
+  value = null_resource.instance.id
 }
 
 output "env" {

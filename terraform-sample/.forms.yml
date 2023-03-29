@@ -51,12 +51,6 @@ use_cases:
 
 
 {% elif stack_usecase == "azure" %}
-      - name: "Azure resource group name"
-        description: "The name of the resource group in which create the resources"
-        key: azure_resource_group_name
-        widget: simple_text
-        type: string
-        default: "cycloid-demo"
       - name: "Azure environment"
         description: "The Cloud Environment which should be used"
         key: azure_env
@@ -69,12 +63,6 @@ use_cases:
         - stack
         - usgovernment
         default: public
-      - name: "Azure location"
-        key: azure_location
-        widget: auto_complete
-        type: string
-        values: [eastasia,southeastasia,centralus,eastus,eastus2,westus,northcentralus,southcentralus,northeurope,westeurope,japanwest,japaneast,brazilsouth,australiaeast,australiasoutheast,southindia,centralindia,westindia,canadacentral,canadaeast,uksouth,ukwest,westcentralus,westus2,koreacentral,koreasouth,francecentral,francesouth,australiacentral,australiacentral2,uaecentral,uaenorth,southafricanorth,southafricawest,switzerlandnorth,switzerlandwest,germanynorth,germanywestcentral,norwaywest,norwayeast]
-        default: francecentral
       - name: "Azure credential"
         description: "The azure credential containing subscription_id, tenant_id, client_id, client_secret"
         key: azure_cred
@@ -94,12 +82,13 @@ use_cases:
     - name: config
       technologies: [terraform]
       vars:
-      - name: "Random string length"
-        description: "Specify the length of the random string"
-        key: random_length
-        widget: number
-        type: integer
-        default: 16
+      - name: "Instance type"
+        description: "Specify the size of the instance"
+        key: instance_type
+        widget: auto_complete
+        type: string
+        values: ["micro","small","medium","large"]
+        default: medium
 
 {% if auth_type == "http" %}
   - name: Git
@@ -177,4 +166,3 @@ use_cases:
         #default: "((ssh_stack.ssh_key))"
         required: true
 {% endif %}
-

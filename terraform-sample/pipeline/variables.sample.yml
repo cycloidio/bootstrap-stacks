@@ -26,8 +26,6 @@ gcp_zone: "Filled by stackforms"
 gcp_credentials_json: "Filled by stackforms"
 
 {% elif stack_usecase == "azure" %}
-azure_resource_group_name: "Filled by stackforms"
-azure_location: "Filled by stackforms"
 azure_env: "Filled by stackforms"
 azure_cred: "Filled by stackforms"
 
