@@ -1,5 +1,5 @@
-output "random_string" {
-  value = module.myapp.random_string
+output "instance_id" {
+  value = module.myapp.instance_id
 }
 
 output "env" {

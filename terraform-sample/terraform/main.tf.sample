@@ -1,11 +1,9 @@
 module "myapp" {
-  #####################################
-  # Do not modify the following lines #
   source = "./module-sample"
 
   project            = var.project
   env                = var.env
   organization       = var.organization
 
-  random_length = "Filled by stackforms"
+  instance_type = "Filled by stackforms"
 }

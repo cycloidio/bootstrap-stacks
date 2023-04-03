@@ -42,6 +42,7 @@ resource_types:
 resources:
 - name: tfstate
   type: terraform
+  icon: terraform
   source:
     env_name: ((env))
     backend_type: http
@@ -56,8 +57,6 @@ resources:
       gcp_project: ((gcp_project))
       gcp_zone: ((gcp_zone))
 {% elif stack_usecase == "azure" %}
-      azure_resource_group_name: ((azure_resource_group_name))
-      azure_location: ((azure_location))
       azure_env: ((azure_env))
       azure_cred: ((azure_cred))
 {% endif %}
@@ -75,6 +74,7 @@ resources:
 # The Terraform stack (will be merged with the config)
 - name: git_stack
   type: git
+  icon: github-circle
   source:
     uri: ($ scs_url $)
     branch: ($ scs_branch $)
@@ -90,6 +90,7 @@ resources:
 # The Terraform config (will be merged with the stack)
 - name: git_config
   type: git
+  icon: github-circle
   source:
     uri: ($ cr_url $)
     branch: ($ cr_branch $)
@@ -104,6 +105,8 @@ resources:
 
 jobs:
   - name: terraform-plan
+    serial: true
+    serial_groups: [terraform]
     max_in_flight: 1
     build_logs_to_retain: 10
     plan:
@@ -119,6 +122,8 @@ jobs:
             terraform_source: merged-stack/
 
   - name: terraform-apply
+    serial: true
+    serial_groups: [terraform]
     build_logs_to_retain: 10
     plan:
       - do:
@@ -141,7 +146,8 @@ jobs:
             terraform_source: merged-stack/
 
   - name: terraform-destroy
-    max_in_flight: 1
+    serial: true
+    serial_groups: [terraform]
     build_logs_to_retain: 10
     plan:
       - do:
