@@ -2,7 +2,7 @@
 version: '2'
 name: terraform-sample
 canonical: terraform-sample
-description: 'bootstrap stack for terraform'
+description: 'Bootstrap stack for terraform'
 # image: https://www.cycloid.io/themes/cycloid/images/owl_logo.png
 keywords:
   - 'terraform'

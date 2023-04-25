@@ -14,9 +14,11 @@ When the user creates a stack from template the BE will pass the following param
 - stack_usecase
 - stack_author
 - stack_canonical
-- service_catalog_canonical
-- scs_credential_path
-- scs_credential_type
+- stack_path
+- scs_canonical
+- scs_cred_path
+- scs_cred_type
+- api_url
 
 The relevant files will be rendered with the passed parameters and added to a resulting stack.
 The relevant files are the following

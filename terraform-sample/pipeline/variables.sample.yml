@@ -2,7 +2,7 @@ env: ($ environment $)
 project: ($ project $)
 org: ($ organization_canonical $)
 
-{% if auth_type == "http" %}
+{% if scs_cred_type == "http" %}
 config_git_username: "Filled by stackforms"
 config_git_password: "Filled by stackforms"
 stack_git_username: "Filled by stackforms"
