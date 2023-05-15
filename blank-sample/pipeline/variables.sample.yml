@@ -1,0 +1,8 @@
+# Expose variables to the pipeline.
+message: "Filled by stackforms"
+
+# Cycloid also provides special variables that can also be injected.
+# See: https://docs.staging.cycloid.io/deploy/stackforms/advanced.html#special-variables
+env: ($ environment $)            # The environment name
+project: ($ project $)            # The project canonical
+org: ($ organization_canonical $) # The organization canonical
