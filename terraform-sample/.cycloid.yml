@@ -1,27 +1,26 @@
----
-version: '2'
-name: terraform-sample
+# Use the latest version 2 of the Cycloid stack engine.
+version: 2
+
+name: Terraform
 canonical: terraform-sample
-description: 'Bootstrap stack for terraform'
-# image: https://www.cycloid.io/themes/cycloid/images/owl_logo.png
+author: '{{ stack_author }}'
+# Fill in the stack details.
+description: 'Discover how to integrate Terraform in your pipelines.'
+image: https://raw.githubusercontent.com/cycloidio/bootstrap-stacks/master/terraform-sample/thumbnail.png
 keywords:
   - 'terraform'
-  - 'start'
-  - 'sample'
   - '{{ stack_usecase }}'
-  - 'provider:aws'
-  - 'provider:azure'
-  - 'provider:gcp'
-template: true
-author: '{{stack_author}}'
 technologies:
   - technology: terraform
-    version: n/a
+    version: 1.3.9
+template: true
 
+# Add use cases to the stack.
+# See: https://docs.cycloid.io/manage/pipeline/multi-use-case.html#multiple-use-case
 config:
   aws:
-    name: 'aws'
-    description: 'aws pipeline usecase'
+    name: 'AWS'
+    description: 'Manage Amazon Web Services (aws) resources.'
     cloud_provider: aws
     pipeline:
       pipeline:
@@ -35,8 +34,8 @@ config:
         destination: '($ project $)/terraform/($ environment $)/main.tf'
 
   azure:
-    name: 'azure'
-    description: 'azure pipeline usecase'
+    name: 'Azure'
+    description: 'Manage Azure (azurerm) resources.'
     cloud_provider: azure
     pipeline:
       pipeline:
@@ -50,8 +49,8 @@ config:
         destination: '($ project $)/terraform/($ environment $)/main.tf'
 
   gcp:
-    name: 'gcp'
-    description: 'gcp pipeline usecase'
+    name: 'GCP'
+    description: 'Manage Google Cloud Platform (google) resources.'
     cloud_provider: gcp
     pipeline:
       pipeline:
@@ -64,9 +63,9 @@ config:
         path: 'terraform/main.tf.sample'
         destination: '($ project $)/terraform/($ environment $)/main.tf'
 
-  raw:
-    name: 'raw'
-    description: 'Standalone pipeline usecase'
+  vanilla:
+    name: 'Basic Terraform'
+    description: 'Cloud-agnostic Terraform sample with no specific provider integration.'
     pipeline:
       pipeline:
         path: 'pipeline/pipeline.yml'

@@ -1,5 +1,4 @@
-variable "organization" {}
-variable "project" {}
-variable "env" {}
-
 variable "instance_type" {}
+variable "env" {}
+variable "project" {}
+variable "organization" {}
