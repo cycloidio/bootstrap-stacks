@@ -30,4 +30,4 @@ Printing a variable value: {{ stack_usecase }}
 | `scs_canonical` | The canonical of the target catalog repository |
 | `scs_cred_path` | The path in Vault of the target catalog repository credential |
 | `scs_cred_type` | The type of the target catalog repository credential (`ssh` or `http`) |
-| `api_url` | {{ api_url }} | The URL of the Cycloid API |
+| `api_url` | The URL of the Cycloid API |
