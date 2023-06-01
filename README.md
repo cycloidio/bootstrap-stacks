@@ -8,7 +8,7 @@ This is a collection of stack templates the users can use to create a small stac
 
 The difference from a normal stacks are the following:
 - a template stack has in the `.config.yml` the field `template: true`
-- you can use jinja2 templates to conditionally alter the resulting stack
+- you can use `pongo2` templates to conditionally alter the resulting stack
 
 When the user creates a stack from template the BE will pass the following parameters:
 - stack_usecase
