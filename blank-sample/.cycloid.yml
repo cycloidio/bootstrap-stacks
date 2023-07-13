@@ -8,6 +8,7 @@ author: '{{ stack_author }}'
 description: 'The bare minimum files to build your stack from scratch.'
 image: https://raw.githubusercontent.com/cycloidio/bootstrap-stacks/master/blank-sample/thumbnail.png
 template: true
+status: 'public'
 
 # Add use cases to the stack.
 # See: https://docs.cycloid.io/manage/pipeline/multi-use-case.html#multiple-use-case
