@@ -36,7 +36,7 @@ config:
   azure:
     name: 'Azure'
     description: 'Manage Azure (azurerm) resources.'
-    cloud_provider: azure
+    cloud_provider: azurerm
     pipeline:
       pipeline:
         path: 'pipeline/pipeline.yml'
@@ -51,7 +51,7 @@ config:
   gcp:
     name: 'GCP'
     description: 'Manage Google Cloud Platform (google) resources.'
-    cloud_provider: gcp
+    cloud_provider: google
     pipeline:
       pipeline:
         path: 'pipeline/pipeline.yml'
