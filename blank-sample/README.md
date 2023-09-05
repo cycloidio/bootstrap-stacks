@@ -19,5 +19,5 @@ Some variables are exposed and can be used in READMEs to generate dynamic conten
 | `stack_path` | The path of the generated stack in the catalog repository |
 | `scs_canonical` | The canonical of the target catalog repository |
 | `scs_cred_path` | The path in Vault of the target catalog repository credential |
-| `scs_cred_type` | The type of the target catalog repository credential (`ssh` or `http`) |
+| `scs_cred_type` | The type of the target catalog repository credential (`ssh` or `basic_auth`) |
 | `api_url` | The URL of the Cycloid API |

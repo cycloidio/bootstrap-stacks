@@ -77,7 +77,7 @@ resources:
   source:
     uri: ($ scs_url $)
     branch: ($ scs_branch $)
-    {%- if scs_cred_type == "http" %}
+    {%- if scs_cred_type == "basic_auth" %}
     username: ((stack_git_username))
     password: ((stack_git_password))
     {%- else %}
@@ -93,7 +93,7 @@ resources:
   source:
     uri: ($ cr_url $)
     branch: ($ cr_branch $)
-    {%- if scs_cred_type == "http" %}
+    {%- if scs_cred_type == "basic_auth" %}
     username: ((config_git_username))
     password: ((config_git_password))
     {%- else %}
