@@ -76,7 +76,7 @@ use_cases:
       vars:
       - name: "Instance type"
         description: "Specify the size of the instance"
-        key: instance_type
+        key: module.myapp.instance_type
         type: string
         widget: auto_complete
         values: ["micro", "small", "medium", "large"]
