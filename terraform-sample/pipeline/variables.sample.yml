@@ -28,4 +28,3 @@ env: ($ environment $)            # The environment name
 project: ($ project $)            # The project canonical
 org: ($ organization_canonical $) # The organization canonical
 stack_path: {{ stack_path }} # The path of the stack in the service catalog, basically the path to the `.cycloid.yml` file
-cycloid_api_url: {{ api_url }} # The URL of the Cycloid API
