@@ -3,13 +3,13 @@ output "instance_id" {
 }
 
 output "env" {
-  value = module.myapp.env
+  value = var.env
 }
 
 output "project" {
-  value = module.myapp.project
+  value = var.project
 }
 
 output "organization" {
-  value = module.myapp.organization
+  value = var.organization
 }
