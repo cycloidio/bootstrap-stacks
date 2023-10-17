@@ -47,7 +47,7 @@ resources:
     # Use Cycloid Terraform HTTP backend.
     backend_type: http
     backend_config:
-      address: '((cycloid_api_url))/inventory?jwt=($ inventory_jwt $)'
+      address: '($ api_url $)/inventory?jwt=($ inventory_jwt $)'
       skip_cert_verification: true
     env_name: ((env))
     vars:
