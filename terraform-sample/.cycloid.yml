@@ -14,7 +14,7 @@ technologies:
   - technology: terraform
     version: 1.3.9
 template: true
-status: 'public'
+status: 'private'
 
 # Add use cases to the stack.
 # See: https://docs.cycloid.io/manage/pipeline/multi-use-case.html#multiple-use-case
