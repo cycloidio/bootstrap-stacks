@@ -2,7 +2,7 @@ variable "organization" {}
 variable "project" {}
 variable "env" {}
 
-{% if stack_usecase == "aws" -%}
+($> if eq .stack_usecase "aws" -<$)
 # Terraform Amazon Web Services provider configuration
 # See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 provider "aws" {
@@ -27,7 +27,7 @@ variable "aws_region" {
   default     = "eu-west-1"
 }
 
-{% elif stack_usecase == "gcp" -%}
+($> else if eq .stack_usecase  "gcp" -<$)
 # Terraform Google provider configuration
 # See: https://registry.terraform.io/providers/hashicorp/google/latest/docs
 terraform {
@@ -51,7 +51,7 @@ variable "gcp_zone" {
   default = "europe-west1-b"
 }
 
-{% elif stack_usecase == "azure" -%}
+($> else if  eq .stack_usecase "azure" -<$)
 # Terraform Azure provider configuration
 # See: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 terraform {
@@ -77,5 +77,4 @@ variable "azure_env" {
   default = "public"
 }
 
-{% else -%}
-{%- endif %}
+($>- end -<$)

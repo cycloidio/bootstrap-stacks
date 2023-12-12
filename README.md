@@ -8,7 +8,8 @@ This is a collection of stack templates the users can use to create a small stac
 
 The difference from a normal stacks are the following:
 - a template stack has in the `.config.yml` the field `template: true`
-- you can use `pongo2` templates to conditionally alter the resulting stack
+- you can use the Go `text/template` templates to conditionally alter the resulting stack.
+In order to not interfere with other templating systems, like Ansible, the delimiters for the template are not the standard ones but `($>` and `<$)`.
 
 When the user creates a stack from template the BE will pass the following parameters:
 - stack_usecase

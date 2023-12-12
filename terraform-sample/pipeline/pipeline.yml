@@ -47,42 +47,42 @@ resources:
     # Use Cycloid Terraform HTTP backend.
     backend_type: http
     backend_config:
-      address: '($ api_url $)/inventory?jwt=($ inventory_jwt $)'
+      address: '($ .api_url $)/inventory?jwt=($ .inventory_jwt $)'
       skip_cert_verification: true
     env_name: ((env))
     vars:
       env: ((env))
       project: ((project))
       organization: ((org))
-      {%- if stack_usecase == "aws" %}
+      ($>- if eq .stack_usecase "aws" <$)
       aws_cred: ((aws_cred))
       aws_region: ((aws_default_region))
-      {%- elif stack_usecase == "gcp" %}
+      ($>- else if eq .stack_usecase "gcp" <$)
       gcp_project: ((gcp_project))
       gcp_zone: ((gcp_zone))
-      {%- elif stack_usecase == "azure" %}
+      ($>- else if eq .stack_usecase  "azure" <$)
       azure_env: ((azure_env))
       azure_cred: ((azure_cred))
-      {%- endif %}
-    {%- if stack_usecase == "gcp" %}
+      ($>- end <$)
+    ($>- if eq .stack_usecase  "gcp" <$)
     env:
       GOOGLE_PROJECT: ((gcp_project))
       GOOGLE_ZONE: ((gcp_zone))
       GOOGLE_CREDENTIALS: ((gcp_credentials_json))
-    {%- endif %}
+    ($>- end <$)
 # The Terraform stack (will be merged with the config).
 - name: git_stack
   type: git
   icon: github-circle
   source:
-    uri: ($ scs_url $)
-    branch: ($ scs_branch $)
-    {%- if scs_cred_type == "basic_auth" %}
+    uri: ($ .scs_url $)
+    branch: ($ .scs_branch $)
+    ($>- if eq .scs_cred_type "basic_auth" <$)
     username: ((stack_git_username))
     password: ((stack_git_password))
-    {%- else %}
+    ($>- else <$)
     private_key: ((stack_git_private_key))
-    {%- endif %}
+    ($>- end <$)
     # Include only the Terraform files in the specified directory.
     paths:
       - ((stack_path))/terraform/*
@@ -91,14 +91,14 @@ resources:
   type: git
   icon: github-circle
   source:
-    uri: ($ cr_url $)
-    branch: ($ cr_branch $)
-    {%- if scs_cred_type == "basic_auth" %}
+    uri: ($ .cr_url $)
+    branch: ($ .cr_branch $)
+    ($>- if eq .scs_cred_type  "basic_auth" <$)
     username: ((config_git_username))
     password: ((config_git_password))
-    {%- else %}
+    ($>- else <$)
     private_key: ((config_git_private_key))
-    {%- endif %}
+    ($>- end <$)
     # Include only the Terraform files in the specified directory.
     paths:
       - ((project))/terraform/((env))/*
