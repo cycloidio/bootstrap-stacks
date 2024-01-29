@@ -7,9 +7,9 @@ use_cases:
 - name: {{ stack_usecase }}
   sections:
   - name: Example section
-    technologies: [pipeline]
     groups:
     - name: Example group
+      technologies: [pipeline]
       vars:
       - name: "Message"
         description: "A message echoed during pipeline runs."
