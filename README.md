@@ -1,10 +1,8 @@
-# boostrap-stacks
+# Stack blueprints
 
+This is a collection of stack blueprints the users can use to create a small stacks to start using Cycloid.
 
-This is a collection of stack templates the users can use to create a small stacks to start using Cycloid.
-
-
-## How does a template work
+## How does a blueprint work
 
 The difference from a normal stacks are the following:
 - a template stack has in the `.config.yml` the field `template: true`
@@ -28,4 +26,3 @@ The relevant files are the following
 
 For example if the `stack_usecase` is `aws`  the file `terraform-sample/terraform/aws/variables.tf` is rendered and included in the resulting stack.
 While `terraform-sample/terraform/gcp/aws-migation.tf` will not since  it is not directly under the `terrafor` directory and the usecase do not appear it the path to the file but in the filename.
-
