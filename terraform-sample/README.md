@@ -2,10 +2,10 @@
 
 > ## This is a stack README file displayed on stack details pages. Edit it to showcase your stack, tell people what can be done with it and how to used it.
 
-## Stack templates READMEs
+## Stack blueprints READMEs
 
-When using stack templates, the README file of the template will be copied over to the stacks generated.  
-Like for other files of a template, it is possible to use `pongo2` templating inside the template `README.md` file. It will be compiled when users generate a stack from it.
+When using stack blueprints, the README file of the blueprint will be copied over to the stacks generated.  
+Like for other files of a blueprint, it is possible to use `pongo2` templating inside the blueprint's `README.md` file. It will be compiled when users generate a stack from it.
 
 Some variables are exposed and can be used in READMEs to generate dynamic content.
 
