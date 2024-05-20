@@ -1,5 +1,5 @@
 # Use the latest version 2 of the Cycloid stack engine.
-version: 2
+version: 3
 
 name: Blank
 canonical: blank-sample
@@ -20,4 +20,4 @@ config:
         path: 'pipeline/pipeline.yml'
       variables:
         path: 'pipeline/variables.sample.yml'
-        destination: '($ project $)/pipeline/variables-($ environment $).yml'
+        destination: '($ .project $)/pipeline/variables-($ .environment $).yml'
