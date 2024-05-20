@@ -24,8 +24,8 @@ definitions:
           - name: merged-stack
             path: "merged-stack"
       params:
-        CONFIG_PATH: ((project))/terraform/((env))
-        STACK_PATH: ((stack_path))/terraform
+        CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+        STACK_PATH: ($ .stack_path $)/terraform
 
 # Declare Concourse resource types to determine versions and sources to use in the pipeline.
 # See: https://concourse-ci.org/resource-types.html
@@ -34,7 +34,7 @@ resource_types:
   type: registry-image
   source:
     repository: cycloid/terraform-resource
-    tag: '1.6.5'
+    tag: '1.8.2'
 
 # Declare resources to be invoked later in jobs.
 resources:
@@ -49,11 +49,11 @@ resources:
     backend_config:
       address: '($ .api_url $)/inventory?jwt=($ .inventory_jwt $)'
       skip_cert_verification: true
-    env_name: ((env))
+    env_name: ($ .environment $)
     vars:
-      env: ((env))
-      project: ((project))
-      organization: ((org))
+      env: ($ .environment $)
+      project: ($ .project $)
+      organization: ($ .organization_canonical $)
       ($>- if eq .stack_usecase "aws" <$)
       aws_cred: ((aws_cred))
       aws_region: ((aws_default_region))
@@ -77,15 +77,18 @@ resources:
   source:
     uri: ($ .scs_url $)
     branch: ($ .scs_branch $)
-    ($>- if eq .scs_cred_type "basic_auth" <$)
-    username: ((stack_git_username))
-    password: ((stack_git_password))
-    ($>- else <$)
-    private_key: ((stack_git_private_key))
-    ($>- end <$)
+    # Stack templating examples:
+    # https://docs.cycloid.io/reference/stack/concepts/templating/
+    ($- if eq .scs_cred_type "basic_auth" $)
+    username: ((($ .scs_cred_path $).username))
+    password: ((($ .scs_cred_path $).password))
+    ($- else $)
+    private_key: ((($ .scs_cred_path $).ssh_key))
+    ($- end $)
     # Include only the Terraform files in the specified directory.
     paths:
-      - ((stack_path))/terraform/*
+      - ($ .stack_path $)/terraform/*
+
 # The Terraform config (will be merged with the stack).
 - name: git_config
   type: git
@@ -93,15 +96,15 @@ resources:
   source:
     uri: ($ .cr_url $)
     branch: ($ .cr_branch $)
-    ($>- if eq .scs_cred_type  "basic_auth" <$)
-    username: ((config_git_username))
-    password: ((config_git_password))
-    ($>- else <$)
-    private_key: ((config_git_private_key))
-    ($>- end <$)
+    ($- if eq .cr_cred_type "basic_auth" $)
+    username: ((($ .cr_cred_path $).username))
+    password: ((($ .cr_cred_path $).password))
+    ($- else $)
+    private_key: ((($ .cr_cred_path $).ssh_key))
+    ($- end $)
     # Include only the Terraform files in the specified directory.
     paths:
-      - ((project))/terraform/((env))/*
+      - ($ .project $)/terraform/($ .environment $)/*
 
 # Define jobs that form the pipeline
 jobs:
@@ -121,6 +124,7 @@ jobs:
           params:
             plan_only: true
             terraform_source: merged-stack/
+
   - name: terraform-apply
     serial: true
     serial_groups: [terraform]
@@ -144,6 +148,7 @@ jobs:
           params:
             plan_run: true
             terraform_source: merged-stack/
+
   - name: terraform-destroy
     serial: true
     serial_groups: [terraform]
