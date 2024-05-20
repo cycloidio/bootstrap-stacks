@@ -4,15 +4,15 @@ version: 2
 # Define the stack configuration form and organize inputs of various types into sections and groups.
 # See: https://docs.staging.cycloid.io/deploy/stackforms/file-format.html
 use_cases:
-- name: {{ stack_usecase }}
+- name: ($> .stack_usecase <$)
   sections:
   - name: Cloud provider
     groups:
-    {%- if stack_usecase != "vanilla" %}
+    ($>- if ne .stack_usecase  "vanilla" <$)
     - name: access
       technologies: [pipeline]
       vars:
-      {%- if stack_usecase == "aws" %}
+      ($>- if eq .stack_usecase  "aws" <$)
       - name: "Aws region"
         key: aws_default_region
         type: string
@@ -28,7 +28,7 @@ use_cases:
           display_keys: false
           cred_types: [aws]
         default: "((aws))"
-      {%- elif stack_usecase == "gcp" %}
+      ($>- else if eq .stack_usecase "gcp" <$)
       - name: "GCP project name"
         description: "The GCP project name to use"
         key: gcp_project
@@ -49,7 +49,7 @@ use_cases:
         widget_config:
           cred_types: [gcp]
         default: "((gcp.json_key))"
-      {%- elif stack_usecase == "azure" %}
+      ($>- else if eq .stack_usecase "azure" <$)
       - name: "Azure environment"
         description: "The Cloud Environment which should be used"
         key: azure_env
@@ -66,8 +66,8 @@ use_cases:
           display_keys: false
           cred_types: [azure]
         default: "((azure))"
-      {%- endif %}
-    {%- endif %}
+      ($>- end <$)
+    ($>- end <$)
 
   - name: App
     groups:
@@ -87,7 +87,7 @@ use_cases:
     - name: config
       technologies: [pipeline]
       vars:
-      {%- if scs_cred_type == "http" %}
+      ($>- if eq .scs_cred_type "http" <$)
       - name: "Config git username"
         description: "Username to fetch the config Git repository."
         key: config_git_username
@@ -104,7 +104,7 @@ use_cases:
         widget: cy_cred
         widget_config:
           cred_types: [basic_auth]
-      {%- else %}
+      ($>- else <$)
       - name: "Config git key"
         description: "SSH key pair to fetch the config Git repository."
         key: config_git_private_key
@@ -113,11 +113,11 @@ use_cases:
         widget: cy_cred
         widget_config:
           cred_types: [ssh]
-      {%- endif %}
+      ($>- end <$)
     - name: stack
       technologies: [pipeline]
       vars:
-      {%- if scs_cred_type == "http" %}
+      ($>- if eq .scs_cred_type "http" <$)
       - name: "Stack git username"
         description: "Username pair to fetch the stack Git repository."
         key: stack_git_username
@@ -134,7 +134,7 @@ use_cases:
         widget: cy_cred
         widget_config:
           cred _types: [basic_auth]
-      {%- else %}
+      ($>- else <$)
       - name: "Stack git key"
         description: "SSH key pair to fetch the stack Git repository."
         key: stack_git_private_key
@@ -143,4 +143,4 @@ use_cases:
         widget: cy_cred
         widget_config:
           cred_types: [ssh]
-      {%- endif %}
+      ($>- end <$)

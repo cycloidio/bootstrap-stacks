@@ -1,9 +1,9 @@
 # Use the latest version 2 of the Cycloid stack engine.
-version: 2
+version: 3
 
 name: Blank
 canonical: blank-sample
-author: '{{ stack_author }}'
+author: '($> .stack_author <$)'
 # Fill in the stack details.
 description: 'The bare minimum files to build your stack from scratch.'
 image: https://raw.githubusercontent.com/cycloidio/bootstrap-stacks/master/blank-sample/thumbnail.png
@@ -20,4 +20,4 @@ config:
         path: 'pipeline/pipeline.yml'
       variables:
         path: 'pipeline/variables.sample.yml'
-        destination: '($ project $)/pipeline/variables-($ environment $).yml'
+        destination: '($ .project $)/pipeline/variables-($ .environment $).yml'

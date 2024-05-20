@@ -2,7 +2,7 @@ variable "organization" {}
 variable "project" {}
 variable "env" {}
 
-{% if stack_usecase == "aws" -%}
+($> if eq .stack_usecase "aws" -<$)
 # Terraform Amazon Web Services provider configuration
 # See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 provider "aws" {
@@ -27,14 +27,13 @@ variable "aws_region" {
   default     = "eu-west-1"
 }
 
-{% elif stack_usecase == "gcp" -%}
+($> else if eq .stack_usecase  "gcp" -<$)
 # Terraform Google provider configuration
 # See: https://registry.terraform.io/providers/hashicorp/google/latest/docs
 terraform {
   required_providers {
     google = {
       source  = "google"
-      version = "~> 2.18.0"
     }
   }
 }
@@ -51,14 +50,13 @@ variable "gcp_zone" {
   default = "europe-west1-b"
 }
 
-{% elif stack_usecase == "azure" -%}
+($> else if  eq .stack_usecase "azure" -<$)
 # Terraform Azure provider configuration
 # See: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 terraform {
   required_providers {
     azurerm = {
       source  = "azurerm"
-      version = "~> 1.42.0"
     }
   }
 }
@@ -69,6 +67,7 @@ provider "azurerm" {
   client_secret   = var.azure_cred.client_secret
   subscription_id = var.azure_cred.subscription_id
   tenant_id       = var.azure_cred.tenant_id
+  features {}
 }
 
 variable "azure_cred" {} # { subscription_id, tenant_id, client_id, client_secret }
@@ -77,5 +76,4 @@ variable "azure_env" {
   default = "public"
 }
 
-{% else -%}
-{%- endif %}
+($>- end -<$)
