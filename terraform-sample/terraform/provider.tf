@@ -34,7 +34,6 @@ terraform {
   required_providers {
     google = {
       source  = "google"
-      version = "~> 2.18.0"
     }
   }
 }
@@ -58,7 +57,6 @@ terraform {
   required_providers {
     azurerm = {
       source  = "azurerm"
-      version = "~> 1.42.0"
     }
   }
 }
@@ -69,6 +67,7 @@ provider "azurerm" {
   client_secret   = var.azure_cred.client_secret
   subscription_id = var.azure_cred.subscription_id
   tenant_id       = var.azure_cred.tenant_id
+  features {}
 }
 
 variable "azure_cred" {} # { subscription_id, tenant_id, client_id, client_secret }
